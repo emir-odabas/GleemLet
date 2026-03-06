@@ -1,0 +1,108 @@
+<Window x:Class="GleemLet.Windows.SetEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Set Editor" Height="680" Width="760"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterOwner" ResizeMode="CanResizeWithGrip"
+        KeyDown="Window_KeyDown">
+    <Border Background="#191920" CornerRadius="12" BorderBrush="#2E2E3A" BorderThickness="1">
+        <Border.Effect><DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="Black" Opacity="0.5"/></Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>  <!-- header -->
+                <RowDefinition Height="Auto"/>  <!-- set info -->
+                <RowDefinition Height="*"/>     <!-- words -->
+                <RowDefinition Height="Auto"/>  <!-- footer -->
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0" Margin="24,18,24,0">
+                <TextBlock x:Name="WindowTitle" Text="New Set"
+                           FontFamily="Segoe UI" FontSize="18" FontWeight="Bold"
+                           Foreground="#E8E8F0" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="✕" Style="{StaticResource IconButton}" Click="Cancel_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Set metadata -->
+            <Grid Grid.Row="1" Margin="24,14,24,14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                    <TextBlock Text="SET NAME" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold"
+                               Foreground="#8888A0" Margin="0,0,0,4"/>
+                    <TextBox x:Name="SetName" Style="{StaticResource DarkTextBox}" Padding="10,8"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                    <TextBlock Text="CATEGORY" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold"
+                               Foreground="#8888A0" Margin="0,0,0,4"/>
+                    <ComboBox x:Name="CategoryBox" Style="{StaticResource DarkComboBox}">
+                        <ComboBoxItem Content="General" IsSelected="True"/>
+                        <ComboBoxItem Content="Academic"/>
+                        <ComboBoxItem Content="Business"/>
+                        <ComboBoxItem Content="Daily"/>
+                        <ComboBoxItem Content="Technical"/>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="DESCRIPTION" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold"
+                               Foreground="#8888A0" Margin="0,0,0,4"/>
+                    <TextBox x:Name="SetDesc" Style="{StaticResource DarkTextBox}" Padding="10,8"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Word rows -->
+            <Grid Grid.Row="2" Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Column headers -->
+                <Grid Grid.Row="0" Margin="24,0,24,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="28"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="36"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="#" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="ENGLISH" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" Margin="4,0,0,0"/>
+                    <TextBlock Grid.Column="2" Text="MEANING / TURKISH" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" Margin="8,0,0,0"/>
+                    <TextBlock Grid.Column="3" Text="EXAMPLE SENTENCE" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" Margin="8,0,0,0"/>
+                </Grid>
+
+                <ScrollViewer Grid.Row="1" Margin="24,0,24,0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="WordRows"/>
+                </ScrollViewer>
+
+                <Button Grid.Row="2" Content="+ Add Word" Margin="24,10,24,0"
+                        Style="{StaticResource GhostButton}"
+                        BorderThickness="2" BorderBrush="#2E2E3A"
+                        HorizontalAlignment="Stretch" Padding="0,12"
+                        Click="AddRow_Click"/>
+            </Grid>
+
+            <!-- Footer -->
+            <Border Grid.Row="3" BorderBrush="#2E2E3A" BorderThickness="0,1,0,0" Padding="24,14">
+                <Grid>
+                    <TextBlock x:Name="WordCount" Text="0 words"
+                               FontFamily="Segoe UI" FontSize="12" Foreground="#4A4A60"
+                               VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Cancel" Style="{StaticResource GhostButton}"
+                                Click="Cancel_Click" Margin="0,0,10,0" Padding="16,9"/>
+                        <Button Content="Save Set →" Style="{StaticResource PrimaryButton}"
+                                Click="Save_Click" Padding="16,9"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
