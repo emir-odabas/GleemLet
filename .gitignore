@@ -170,3 +170,7 @@ $RECYCLE.BIN/
 *.msu
 *.msp
 *.lnk
+
+# Publish output (large files)
+publish/
+*.exe
