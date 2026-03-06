@@ -15,11 +15,6 @@ GleemLet is a WPF desktop application for learning English vocabulary through fl
 
 ---
 
-## Screenshots
-
-> *(Add screenshots here)*
-
----
 
 ## Prerequisites
 
