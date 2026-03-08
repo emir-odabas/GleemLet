@@ -2,7 +2,7 @@
 
 GleemLet is a WPF desktop application for learning English vocabulary through flashcards, quizzes, and set-based study sessions — with full dark/light theme support.
 
-<video src="https://github.com/user-attachments/assets/c170fb72-e0e0-4797-864f-b0e1cf412e26" autoplay loop muted playsinline width="100%"></video>
+![GleemLet Demo](https://github.com/emir-odabas/GleemLet/blob/main/gleemlet_preview.gif?raw=true)
 
 ## Features
 
