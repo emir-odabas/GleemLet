@@ -2,7 +2,7 @@
 
 GleemLet is a WPF desktop application for learning English vocabulary through flashcards, quizzes, and set-based study sessions — with full dark/light theme support.
 
----
+![GleemLet Demo](https://github.com/emir-odabas/GleemLet/blob/main/gleemlet_preview.gif?raw=true)
 
 ## Features
 
@@ -15,15 +15,9 @@ GleemLet is a WPF desktop application for learning English vocabulary through fl
 
 ---
 
-## Screenshots
-
-> *(Add screenshots here)*
-
----
-
 ## Prerequisites
 
-- [.NET 8.0 Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) or later
+- **.NET 8.0 Runtime** or later
 - Windows 10/11
 - Visual Studio 2022 (for development)
 
@@ -32,12 +26,11 @@ GleemLet is a WPF desktop application for learning English vocabulary through fl
 ## Getting Started
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/emir-odabas/GleemLet.git
-   ```
+```
+git clone https://github.com/emir-odabas/GleemLet.git
+```
 
 2. Open `GleemLet.csproj` in Visual Studio 2022.
-
 3. Build and run the project (`F5`).
 
 ---
@@ -45,7 +38,8 @@ GleemLet is a WPF desktop application for learning English vocabulary through fl
 ## Build
 
 To publish a self-contained release:
-```bash
+
+```
 dotnet publish -c Release -r win-x64 --self-contained true
 ```
 
