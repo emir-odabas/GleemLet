@@ -69,13 +69,15 @@
                         <ColumnDefinition Width="28"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="84"/>
                         <ColumnDefinition Width="36"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="#" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1" Text="ENGLISH" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" Margin="4,0,0,0"/>
                     <TextBlock Grid.Column="2" Text="MEANING / TURKISH" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" Margin="8,0,0,0"/>
                     <TextBlock Grid.Column="3" Text="EXAMPLE SENTENCE" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" Margin="8,0,0,0"/>
+                    <TextBlock Grid.Column="4" Text="LEVEL" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold" Foreground="#4A4A60" Margin="8,0,0,0"/>
                 </Grid>
 
                 <ScrollViewer Grid.Row="1" Margin="24,0,24,0" VerticalScrollBarVisibility="Auto">

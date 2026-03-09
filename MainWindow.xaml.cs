@@ -37,6 +37,7 @@ public partial class MainWindow : Window
         UpdateSidebarLabels();
         UpdateSidebar();
         ShowHome();
+
     }
 
     // Dil değişince tüm UI'ı yeniden çiz
@@ -64,6 +65,49 @@ public partial class MainWindow : Window
         NavBadgesText.Text  = L.NavBadges;
         NavProfileText.Text = L.NavProfile;
         QuickStudyText.Text = L.QuickStudy;
+
+        // Detail sayfası butonları — dil değişince güncellenir
+        DetailBackBtn.Content       = L.BackToSets;
+        DetailEditBtn.Content       = L.EditSet;
+        DetailDeleteBtn.Content     = L.DeleteSet;
+        DetailFlashcardsText.Text   = L.Flashcards;
+        DetailLearnText.Text        = L.Learn;
+        DetailTestText.Text         = L.Test;
+        DetailTimedText.Text        = L.Timed;
+        DetailSearchHint.Text       = L.DetailSearchHint;
+
+        // Sets sayfası — arama placeholder, yeni set butonu, kategori filtresi
+        SetsSearchHint.Text = L.SearchPlaceholder;
+        NewSetBtn.Content   = L.NewSet;
+        UpdateCategoryFilter();
+    }
+
+    // Kategori filtresini şu anki dile göre yeniden doldurur
+    private void UpdateCategoryFilter()
+    {
+        // Mevcut tag'i koru (İngilizce key = "" → Tümü, "General", "Academic" ...)
+        var currentTag = (CategoryFilter.SelectedItem as ComboBoxItem)?.Tag as string ?? "";
+
+        CategoryFilter.SelectionChanged -= Filter_Changed;
+        CategoryFilter.Items.Clear();
+
+        var cats = new[]
+        {
+            ("",          L.CatAllLabel),
+            ("General",   L.CatGeneral),
+            ("Academic",  L.CatAcademic),
+            ("Business",  L.CatBusiness),
+            ("Daily",     L.CatDaily),
+            ("Technical", L.CatTechnical),
+        };
+        int selectIdx = 0;
+        for (int i = 0; i < cats.Length; i++)
+        {
+            CategoryFilter.Items.Add(new ComboBoxItem { Content = cats[i].Item2, Tag = cats[i].Item1 });
+            if (cats[i].Item1 == currentTag) selectIdx = i;
+        }
+        CategoryFilter.SelectedIndex = selectIdx;
+        CategoryFilter.SelectionChanged += Filter_Changed;
     }
 
     // ═══════════════════════════════════════
@@ -87,8 +131,6 @@ public partial class MainWindow : Window
 
     private void HideAllPages()
     {
-        // Lobi müziği sadece ana ekranda çalar — diğer sayfaya geçince durdur
-        SoundSvc.StopLobbyMusic();
         PageHome.Visibility    = Visibility.Collapsed;
         PageSets.Visibility    = Visibility.Collapsed;
         PageDetail.Visibility  = Visibility.Collapsed;
@@ -123,10 +165,6 @@ public partial class MainWindow : Window
         HideAllPages();
         PageHome.Visibility = Visibility.Visible;
         HomePanel.Children.Clear();
-
-        // Lobi müziğini başlat (eğer açıksa)
-        if (_ds.Data.Profile.MusicEnabled)
-            SoundSvc.StartLobbyMusic();
 
         var p            = _ds.Data.Profile;
         int totalWords   = _ds.Data.Sets.Sum(s => s.Words.Count);
@@ -273,8 +311,10 @@ public partial class MainWindow : Window
         if (!string.IsNullOrEmpty(filter))
             sets = sets.Where(s => s.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
                                    s.Words.Any(w => (w.En ?? "").Contains(filter, StringComparison.OrdinalIgnoreCase) || (w.Tr ?? "").Contains(filter, StringComparison.OrdinalIgnoreCase)));
-        if (!string.IsNullOrEmpty(cat) && cat != "All Categories")
-            sets = sets.Where(s => s.Category == cat);
+        // Kategori filtrele — Tag'i English key olarak kullan (L.CategoryKey gereksiz)
+        var selectedTag = (CategoryFilter.SelectedItem as ComboBoxItem)?.Tag as string ?? "";
+        if (!string.IsNullOrEmpty(selectedTag))
+            sets = sets.Where(s => s.Category == selectedTag);
 
         var list = sets.OrderByDescending(s => s.LastStudied ?? s.Created).ToList();
         if (list.Count == 0)
@@ -301,10 +341,16 @@ public partial class MainWindow : Window
         RenderSets(SearchBox.Text, (CategoryFilter.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "");
     }
 
+    private void DetailSearch_Changed(object s, TextChangedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(_currentSetId))
+            ShowDetail(_currentSetId, DetailSearchBox.Text);
+    }
+
     // ═══════════════════════════════════════
     //  SET DETAIL
     // ═══════════════════════════════════════
-    private void ShowDetail(string setId)
+    private void ShowDetail(string setId, string wordFilter = "")
     {
         _currentPage = "detail";
         _currentSetId = setId;
@@ -312,6 +358,10 @@ public partial class MainWindow : Window
         PageDetail.Visibility = Visibility.Visible;
         var set = _ds.Data.Sets.FirstOrDefault(s => s.Id == setId);
         if (set == null) return;
+
+        // Only clear the search box when opening a new set (not while filtering)
+        if (string.IsNullOrEmpty(wordFilter))
+            DetailSearchBox.Text = "";
 
         DetailName.Text = set.Name;
         DetailMeta.Text = L.WordsCount(set.Words.Count, set.LearnedCount, set.Category, set.Progress);
@@ -322,13 +372,21 @@ public partial class MainWindow : Window
 
         DetailWords.Children.Clear();
 
-        var pb = new Border { Background = new SolidColorBrush(Color.FromRgb(28, 28, 34)), Height = 8, CornerRadius = new CornerRadius(4), Margin = new Thickness(0, 0, 0, 20) };
+        var pb = new Border { Background = new SolidColorBrush(Color.FromRgb(28, 28, 34)), Height = 8, CornerRadius = new CornerRadius(4), Margin = new Thickness(0, 0, 0, 14) };
         var pf = new Border { Background = new SolidColorBrush(Color.FromRgb(79, 172, 130)), CornerRadius = new CornerRadius(4), HorizontalAlignment = HorizontalAlignment.Left };
         pb.Child = pf;
         DetailWords.Children.Add(pb);
         Dispatcher.InvokeAsync(() => pf.Width = pb.ActualWidth * (set.Progress / 100.0), DispatcherPriority.Loaded);
 
-        foreach (var w in set.Words)
+        // Filter words if search active
+        var words = set.Words.AsEnumerable();
+        if (!string.IsNullOrWhiteSpace(wordFilter))
+            words = words.Where(w =>
+                (w.En ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase) ||
+                (w.Tr ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase) ||
+                (w.Level ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase));
+
+        foreach (var w in words)
         {
             var row = new Border
             {
@@ -342,6 +400,7 @@ public partial class MainWindow : Window
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(4) });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            g.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             g.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
 
             var accent = new Border
@@ -363,20 +422,75 @@ public partial class MainWindow : Window
             trText.VerticalAlignment = VerticalAlignment.Center;
             Grid.SetColumn(trText, 2);
 
+            // CEFR level badge
+            var levelBadge = BuildCefrBadge(w.Level);
+            Grid.SetColumn(levelBadge, 3);
+
             var learned = new CheckBox
             {
                 IsChecked = w.Learned, VerticalAlignment = VerticalAlignment.Center,
-                ToolTip   = L.MarkLearned
+                ToolTip   = L.MarkLearned, Margin = new Thickness(8, 0, 0, 0)
             };
             var capturedId = w.Id;
             learned.Checked   += (s, e) => { var fw = set.Words.FirstOrDefault(x => x.Id == capturedId); if (fw != null) { fw.Learned = true;  _ds.Save(); } };
             learned.Unchecked += (s, e) => { var fw = set.Words.FirstOrDefault(x => x.Id == capturedId); if (fw != null) { fw.Learned = false; _ds.Save(); } };
-            Grid.SetColumn(learned, 3);
+            Grid.SetColumn(learned, 4);
 
-            g.Children.Add(accent); g.Children.Add(enSp); g.Children.Add(trText); g.Children.Add(learned);
+            g.Children.Add(accent); g.Children.Add(enSp); g.Children.Add(trText);
+            g.Children.Add(levelBadge); g.Children.Add(learned);
             row.Child = g;
             DetailWords.Children.Add(row);
         }
+
+        // No results message
+        if (!string.IsNullOrWhiteSpace(wordFilter) && DetailWords.Children.Count <= 1)
+            DetailWords.Children.Add(MakeText(L.Lang == AppLanguage.Turkish ? "Kelime bulunamadı." : "No words found.", 13, "#4A4A60", margin: new Thickness(0, 10, 0, 0)));
+    }
+
+    // Builds a colored CEFR level badge (A1–C2), always visible
+    private static Border BuildCefrBadge(string? level)
+    {
+        bool hasLevel = !string.IsNullOrEmpty(level);
+
+        Color bg, fg;
+        switch (level)
+        {
+            case "A1": case "A2":
+                bg = Color.FromRgb(26, 58, 38);  fg = Color.FromRgb(80, 200, 120); break;
+            case "B1":
+                bg = Color.FromRgb(56, 50, 20);  fg = Color.FromRgb(229, 192, 80); break;
+            case "B2":
+                bg = Color.FromRgb(60, 44, 16);  fg = Color.FromRgb(229, 150, 60); break;
+            case "C1":
+                bg = Color.FromRgb(58, 26, 30);  fg = Color.FromRgb(224, 108, 117); break;
+            case "C2":
+                bg = Color.FromRgb(50, 20, 58);  fg = Color.FromRgb(198, 120, 240); break;
+            default:
+                bg = Color.FromRgb(30, 30, 38);  fg = Color.FromRgb(60, 60, 80); break;
+        }
+
+        var badge = new Border
+        {
+            Background        = new SolidColorBrush(bg),
+            BorderBrush       = new SolidColorBrush(fg),
+            BorderThickness   = new Thickness(1),
+            CornerRadius      = new CornerRadius(4),
+            Padding           = new Thickness(6, 2, 6, 2),
+            Margin            = new Thickness(8, 0, 6, 0),
+            VerticalAlignment = VerticalAlignment.Center,
+            MinWidth          = 32,
+            Visibility        = Visibility.Visible
+        };
+        badge.Child = new TextBlock
+        {
+            Text                = hasLevel ? level! : "—",
+            FontFamily          = new FontFamily("Segoe UI"),
+            FontSize            = 10,
+            FontWeight          = hasLevel ? FontWeights.Bold : FontWeights.Normal,
+            Foreground          = new SolidColorBrush(fg),
+            HorizontalAlignment = HorizontalAlignment.Center
+        };
+        return badge;
     }
 
     // ═══════════════════════════════════════
@@ -702,15 +816,39 @@ public partial class MainWindow : Window
         var nextBtn  = new Button { Content = L.Next,  Style = (Style)FindResource("PrimaryButton"), Padding = new Thickness(24, 10, 24, 10), HorizontalAlignment = HorizontalAlignment.Right, Visibility = Visibility.Collapsed, Margin = new Thickness(0, 10, 0, 0) };
 
         panel.Children.Add(input); panel.Children.Add(feedback);
-        panel.Children.Add(checkBtn); panel.Children.Add(nextBtn);
+
+        var addSynonymBtn = new Button
+        {
+            Content = L.Lang == AppLanguage.Turkish ? "Bu eş anlamlı mı? Ekle ➕" : "Is this a synonym? Add ➕",
+            Visibility = Visibility.Collapsed,
+            Margin = new Thickness(0, -6, 0, 12),
+            Style = (Style)FindResource("GhostButton")
+        };
+        panel.Children.Add(addSynonymBtn);
+
+        var btnPanel = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+        btnPanel.Children.Add(checkBtn); btnPanel.Children.Add(nextBtn);
+        panel.Children.Add(btnPanel);
+
+        string Normalize(string s) => s
+            .Replace("ş", "s").Replace("ç", "c").Replace("ğ", "g")
+            .Replace("ı", "i").Replace("ö", "o").Replace("ü", "u");
 
         void Check()
         {
             if (_answered) return;
-            _answered = true;
             var answer   = input.Text.Trim().ToLower();
+            
+            if (string.IsNullOrEmpty(answer)) return; // Do not process empty answers
+            
+            _answered = true;
+            string normAnswer = Normalize(answer);
+
             var corrects = w.Tr.Split([',', '/', ';'], StringSplitOptions.TrimEntries).Select(x => x.ToLower()).ToList();
-            bool ok      = corrects.Any(c => c == answer || answer.Contains(c) || c.Contains(answer));
+            bool ok = corrects.Any(c => {
+                string nc = Normalize(c);
+                return nc == normAnswer || normAnswer.Contains(nc) || nc.Contains(normAnswer) || GetSimilarity(nc, normAnswer) >= 0.60;
+            });
             input.IsEnabled = false;
             if (ok)
             {
@@ -730,9 +868,35 @@ public partial class MainWindow : Window
                 feedback.Background      = new SolidColorBrush(Color.FromRgb(46, 26, 30));
                 feedback.BorderBrush     = new SolidColorBrush(Color.FromRgb(224, 108, 117));
                 feedback.BorderThickness = new Thickness(1);
-                feedbackText.Text        = L.Lang == AppLanguage.Turkish ? $"✗  Doğrusu: {w.Tr}" : $"✗  Correct answer: {w.Tr}";
+                feedbackText.Text        = L.Lang == AppLanguage.Turkish ? $"✗  Doğrusu: {corrects[0]}" : $"✗  Correct answer: {corrects[0]}";
                 feedbackText.Foreground  = new SolidColorBrush(Color.FromRgb(224, 108, 117));
                 _studyWrong++;
+
+                addSynonymBtn.Visibility = Visibility.Visible;
+                addSynonymBtn.IsEnabled = true;
+                addSynonymBtn.Content = L.Lang == AppLanguage.Turkish ? "Bu eş anlamlı mı? Ekle ➕" : "Is this a synonym? Add ➕";
+
+                // Captured variables for lambda
+                var wordToUpdate = w;
+                var userAnswer = answer;
+
+                // Remove previous handlers to avoid duplicates on re-check
+                addSynonymBtn.Click -= AddSynonym_Click;
+                
+                void AddSynonym_Click(object sender, RoutedEventArgs args)
+                {
+                    var existing = wordToUpdate.Tr.Split([',', '/', ';'])
+                                         .Select(x => x.Trim().ToLower());
+                    if (!existing.Contains(userAnswer))
+                    {
+                        wordToUpdate.Tr += $", {userAnswer}";
+                        _ds.Save();
+                    }
+                    addSynonymBtn.Content = L.Lang == AppLanguage.Turkish ? "✓ Eş anlamlı eklendi!" : "✓ Synonym added!";
+                    addSynonymBtn.IsEnabled = false;
+                }
+
+                addSynonymBtn.Click += AddSynonym_Click;
             }
             _ds.Save();
             feedback.Visibility = Visibility.Visible;
@@ -747,6 +911,27 @@ public partial class MainWindow : Window
         var sv = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto, Content = panel };
         StudyContent.Children.Add(sv);
         Dispatcher.InvokeAsync(() => input.Focus(), DispatcherPriority.Loaded);
+    }
+
+    private static double GetSimilarity(string a, string b)
+    {
+        if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b)) return 0;
+        int maxLen = Math.Max(a.Length, b.Length);
+        if (maxLen == 0) return 1.0;
+        return 1.0 - (double)LevenshteinDistance(a, b) / maxLen;
+    }
+
+    private static int LevenshteinDistance(string a, string b)
+    {
+        int[,] dp = new int[a.Length + 1, b.Length + 1];
+        for (int i = 0; i <= a.Length; i++) dp[i, 0] = i;
+        for (int j = 0; j <= b.Length; j++) dp[0, j] = j;
+        for (int i = 1; i <= a.Length; i++)
+            for (int j = 1; j <= b.Length; j++)
+                dp[i, j] = a[i-1] == b[j-1]
+                    ? dp[i-1, j-1]
+                    : 1 + Math.Min(dp[i-1, j-1], Math.Min(dp[i-1, j], dp[i, j-1]));
+        return dp[a.Length, b.Length];
     }
 
     // ── RESULTS ──
@@ -945,15 +1130,8 @@ public partial class MainWindow : Window
 
         AddSettingsCard(ProfilePanel, L.Preferences, panel =>
         {
-            AddToggleRow(panel, L.SoundEffects, L.SoundDesc,     p.SoundEnabled,   val => { p.SoundEnabled   = val; _ds.Save(); });
-            AddToggleRow(panel, L.LobbyMusic,   L.LobbyMusicDesc, p.MusicEnabled,  val =>
-            {
-                p.MusicEnabled = val;
-                _ds.Save();
-                if (val) SoundSvc.StartLobbyMusic();
-                else     SoundSvc.StopLobbyMusic();
-            });
-            AddToggleRow(panel, L.ShuffleDefault, L.ShuffleDesc,  p.ShuffleDefault, val => { p.ShuffleDefault = val; _ds.Save(); });
+            AddToggleRow(panel, L.SoundEffects, L.SoundDesc, p.SoundEnabled, val => { p.SoundEnabled = val; _ds.Save(); });
+            AddToggleRow(panel, L.ShuffleDefault, L.ShuffleDesc, p.ShuffleDefault, val => { p.ShuffleDefault = val; _ds.Save(); });
         });
 
         // ── DİL SEÇİCİ ──
@@ -1436,7 +1614,7 @@ public partial class MainWindow : Window
         row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         var input = new TextBox { Style = (Style)Application.Current.Resources["DarkTextBox"], Text = value };
-        var btn   = new Button  { Content = "Save", Style = (Style)FindResource("PrimaryButton"), Padding = new Thickness(12, 8, 12, 8), Margin = new Thickness(8, 0, 0, 0) };
+        var btn   = new Button  { Content = L.Save, Style = (Style)FindResource("PrimaryButton"), Padding = new Thickness(12, 8, 12, 8), Margin = new Thickness(8, 0, 0, 0) };
         btn.Click += (s, e) => onSave(input.Text.Trim());
         Grid.SetColumn(input, 0); Grid.SetColumn(btn, 1);
         row.Children.Add(input); row.Children.Add(btn);

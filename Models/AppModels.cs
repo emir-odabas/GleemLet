@@ -62,6 +62,7 @@ public class Flashcard
     public string En           { get; set; } = "";
     public string Tr           { get; set; } = "";
     public string Example      { get; set; } = "";
+    public string Level        { get; set; } = "";  // CEFR: A1 A2 B1 B2 C1 C2
     public bool   Learned      { get; set; }
     public int    CorrectCount { get; set; }
     public int    WrongCount   { get; set; }

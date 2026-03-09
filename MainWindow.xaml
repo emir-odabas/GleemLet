@@ -18,7 +18,7 @@
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="FontSize"   Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="#E8E8F0"/>
+            <Setter Property="Foreground" Value="{DynamicResource Text}"/>
             <Setter Property="Margin"     Value="0,0,0,20"/>
         </Style>
     </Window.Resources>
@@ -44,17 +44,21 @@
                             shell:WindowChrome.IsHitTestVisibleInChrome="True">
                         <Grid Margin="16,0">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Border Width="30" Height="30" CornerRadius="8" Margin="0,0,10,0">
+                                <!-- Styled circular logo -->
+                                <Border Width="32" Height="32" CornerRadius="16" Margin="0,0,10,0">
                                     <Border.Background>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="#3A8A68" Offset="0"/>
-                                            <GradientStop Color="#4FAC82" Offset="1"/>
+                                            <GradientStop Color="#2D7A58" Offset="0"/>
+                                            <GradientStop Color="#5CDEB5" Offset="1"/>
                                         </LinearGradientBrush>
                                     </Border.Background>
-                                    <TextBlock Text="GL" FontFamily="Segoe UI" FontSize="12" FontWeight="Bold"
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="10" ShadowDepth="0" Color="#4FAC82" Opacity="0.7"/>
+                                    </Border.Effect>
+                                    <TextBlock Text="G" FontFamily="Segoe UI" FontSize="15" FontWeight="Bold"
                                                Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
-                                <TextBlock FontFamily="Segoe UI" FontSize="16" FontWeight="Bold" Foreground="#E8E8F0" VerticalAlignment="Center">
+                                <TextBlock FontFamily="Segoe UI" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource Text}" VerticalAlignment="Center">
                                     <Run Text="Gleem"/><Run Text="Let" Foreground="#4FAC82"/>
                                 </TextBlock>
                             </StackPanel>
@@ -70,7 +74,7 @@
                     <!-- Nav items -->
                     <StackPanel Grid.Row="1" Margin="10,10,10,0">
                         <TextBlock Text="MENU" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#4A4A60" Margin="6,0,0,8"/>
+                                   Foreground="{DynamicResource Dim}" Margin="6,0,0,8"/>
 
                         <ToggleButton x:Name="NavHome" IsChecked="True"
                                       Style="{StaticResource NavButton}" Click="Nav_Click" Tag="home">
@@ -108,10 +112,10 @@
                             </StackPanel>
                         </ToggleButton>
 
-                        <Separator Background="#2E2E3A" Margin="6,16,6,16"/>
+                        <Separator Background="{DynamicResource Border}" Margin="6,16,6,16"/>
 
                         <TextBlock Text="STUDY" FontFamily="Segoe UI" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#4A4A60" Margin="6,0,0,8"/>
+                                   Foreground="{DynamicResource Dim}" Margin="6,0,0,8"/>
 
                         <Button Style="{StaticResource GhostButton}" Click="QuickStudy_Click"
                                 Margin="0,0,0,4" HorizontalContentAlignment="Left">
@@ -123,25 +127,25 @@
                     </StackPanel>
 
                     <!-- Streak / XP at bottom -->
-                    <Border Grid.Row="2" BorderBrush="#2E2E3A" BorderThickness="0,1,0,0" Padding="14,12">
+                    <Border Grid.Row="2" BorderBrush="{DynamicResource Border}" BorderThickness="0,1,0,0" Padding="14,12">
                         <StackPanel>
                             <Grid Margin="0,0,0,6">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock x:Name="AvatarText" Text="🎓" FontSize="18" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock x:Name="StreakText" Text="0 day streak"
                                                FontFamily="Segoe UI" FontSize="12" FontWeight="SemiBold"
-                                               Foreground="#E8E8F0" VerticalAlignment="Center"/>
+                                               Foreground="{DynamicResource Text}" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <TextBlock x:Name="LevelText" Text="Lv.1"
                                            FontFamily="Segoe UI" FontSize="11" FontWeight="Bold"
-                                           Foreground="#4FAC82" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                           Foreground="{DynamicResource Teal}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </Grid>
-                            <Border Background="#1C1C22" CornerRadius="3" Height="6">
-                                <Border x:Name="XPBar" Background="#4FAC82" CornerRadius="3"
+                            <Border Background="{DynamicResource Surface}" CornerRadius="3" Height="6">
+                                <Border x:Name="XPBar" Background="{DynamicResource Teal}" CornerRadius="3"
                                         HorizontalAlignment="Left" Width="0"/>
                             </Border>
                             <TextBlock x:Name="XPText" Text="0 XP"
-                                       FontFamily="Segoe UI" FontSize="10" Foreground="#4A4A60" Margin="0,4,0,0"/>
+                                       FontFamily="Segoe UI" FontSize="10" Foreground="{DynamicResource Dim}" Margin="0,4,0,0"/>
                         </StackPanel>
                     </Border>
                 </Grid>
@@ -164,20 +168,20 @@
                     <!-- Header -->
                     <Grid Grid.Row="0" Margin="32,28,32,20">
                         <StackPanel>
-                            <TextBlock Text="My Sets" Style="{StaticResource SectionTitle}" Margin="0"/>
+                            <TextBlock x:Name="PageSetsTitle" Text="My Sets" Style="{StaticResource SectionTitle}" Margin="0"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" Background="#1C1C22" BorderBrush="#2E2E3A"
+                                <Border Grid.Column="0" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}"
                                         BorderThickness="1" CornerRadius="8" Margin="0,0,10,0">
                                     <Grid>
                                         <TextBox x:Name="SearchBox" Style="{StaticResource DarkTextBox}"
                                                  BorderThickness="0" Background="Transparent"
                                                  TextChanged="Search_Changed"/>
-                                        <TextBlock Text="🔍  Search sets and words..." Foreground="#4A4A60"
+                                        <TextBlock x:Name="SetsSearchHint" Text="🔍  Search sets and words..." Foreground="{DynamicResource Dim}"
                                                    FontFamily="Segoe UI" FontSize="13" IsHitTestVisible="False"
                                                    VerticalAlignment="Center" Margin="12,0">
                                             <TextBlock.Style>
@@ -196,15 +200,8 @@
                                 <ComboBox x:Name="CategoryFilter" Grid.Column="1"
                                           Style="{StaticResource DarkComboBox}"
                                           Width="140" Margin="0,0,10,0"
-                                          SelectionChanged="Filter_Changed">
-                                    <ComboBoxItem Content="All Categories" IsSelected="True"/>
-                                    <ComboBoxItem Content="General"/>
-                                    <ComboBoxItem Content="Academic"/>
-                                    <ComboBoxItem Content="Business"/>
-                                    <ComboBoxItem Content="Daily"/>
-                                    <ComboBoxItem Content="Technical"/>
-                                </ComboBox>
-                                <Button Grid.Column="2" Content="+ New Set"
+                                          SelectionChanged="Filter_Changed"/>
+                                <Button x:Name="NewSetBtn" Grid.Column="2" Content="+ New Set"
                                         Style="{StaticResource PrimaryButton}" Click="NewSet_Click"/>
                             </Grid>
                         </StackPanel>
@@ -218,16 +215,11 @@
                 <Grid x:Name="PageDetail" Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <!-- Detail header -->
-                    <Border Grid.Row="0" Padding="32,24,32,20" BorderBrush="#2E2E3A" BorderThickness="0,0,0,1">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#1A2E24" Offset="0"/>
-                                <GradientStop Color="#121216" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
+                    <Border Grid.Row="0" Padding="32,24,32,20" BorderBrush="{DynamicResource Border}" BorderThickness="0,0,0,1" Background="{DynamicResource Surface}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -235,45 +227,68 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
-                                <Button Content="← Back to Sets" Style="{StaticResource GhostButton}"
+                                <Button x:Name="DetailBackBtn" Content="← Back to Sets" Style="{StaticResource GhostButton}"
                                         Padding="10,6" Click="BackToSets_Click"/>
                             </StackPanel>
                             <Grid Grid.Row="1" Margin="0,0,0,16">
                                 <StackPanel>
                                     <TextBlock x:Name="DetailName" Text="Set Name"
                                                FontFamily="Segoe UI" FontSize="24" FontWeight="Bold"
-                                               Foreground="#E8E8F0"/>
+                                               Foreground="{DynamicResource Text}"/>
                                     <TextBlock x:Name="DetailMeta" Text=""
-                                               FontFamily="Segoe UI" FontSize="13" Foreground="#8888A0"
+                                               FontFamily="Segoe UI" FontSize="13" Foreground="{DynamicResource Muted}"
                                                Margin="0,4,0,0"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                     <Button x:Name="FavBtn" Content="☆" Style="{StaticResource IconButton}"
                                             Width="36" Height="36" FontSize="18" Click="Fav_Click"/>
-                                    <Button Content="✏ Edit" Style="{StaticResource GhostButton}"
+                                    <Button x:Name="DetailEditBtn" Content="✏ Edit" Style="{StaticResource GhostButton}"
                                             Padding="10,7" Click="EditSet_Click" Margin="6,0"/>
-                                    <Button Content="🗑 Delete" Style="{StaticResource DangerButton}"
+                                    <Button x:Name="DetailDeleteBtn" Content="🗑 Delete" Style="{StaticResource DangerButton}"
                                             Padding="10,7" Click="DeleteSet_Click"/>
                                 </StackPanel>
                             </Grid>
                             <!-- Study mode buttons -->
                             <StackPanel Grid.Row="2" Orientation="Horizontal">
                                 <Button Style="{StaticResource PrimaryButton}" Click="StartFlash_Click" Margin="0,0,10,0">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="🃏" Margin="0,0,6,0"/><TextBlock Text="Flashcards"/></StackPanel>
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="🃏" Margin="0,0,6,0"/><TextBlock x:Name="DetailFlashcardsText" Text="Flashcards"/></StackPanel>
                                 </Button>
                                 <Button Style="{StaticResource GhostButton}" Click="StartLearn_Click" Margin="0,0,10,0">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="🧠" Margin="0,0,6,0"/><TextBlock Text="Learn"/></StackPanel>
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="🧠" Margin="0,0,6,0"/><TextBlock x:Name="DetailLearnText" Text="Learn"/></StackPanel>
                                 </Button>
                                 <Button Style="{StaticResource GhostButton}" Click="StartTest_Click" Margin="0,0,10,0">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="✍" Margin="0,0,6,0"/><TextBlock Text="Test"/></StackPanel>
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="✍" Margin="0,0,6,0"/><TextBlock x:Name="DetailTestText" Text="Test"/></StackPanel>
                                 </Button>
                                 <Button Style="{StaticResource GhostButton}" Click="StartTimed_Click">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="⏱" Margin="0,0,6,0"/><TextBlock Text="Timed"/></StackPanel>
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="⏱" Margin="0,0,6,0"/><TextBlock x:Name="DetailTimedText" Text="Timed"/></StackPanel>
                                 </Button>
                             </StackPanel>
                         </Grid>
                     </Border>
-                    <ScrollViewer Grid.Row="1" Margin="32,20,32,32" VerticalScrollBarVisibility="Auto">
+                    <!-- Word Search Bar -->
+                    <Border Grid.Row="1" Margin="32,14,32,0" Background="{DynamicResource Surface}"
+                            BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8">
+                        <Grid>
+                            <TextBox x:Name="DetailSearchBox" Style="{StaticResource DarkTextBox}"
+                                     BorderThickness="0" Background="Transparent"
+                                     TextChanged="DetailSearch_Changed"/>
+                            <TextBlock x:Name="DetailSearchHint" Text="🔍  Search words in this set..." Foreground="{DynamicResource Dim}"
+                                       FontFamily="Segoe UI" FontSize="13" IsHitTestVisible="False"
+                                       VerticalAlignment="Center" Margin="12,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=DetailSearchBox}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                    <ScrollViewer Grid.Row="2" Margin="32,14,32,32" VerticalScrollBarVisibility="Auto">
                         <StackPanel x:Name="DetailWords"/>
                     </ScrollViewer>
                 </Grid>
@@ -285,7 +300,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <!-- Study header -->
-                    <Border Grid.Row="0" Background="#1C1C22" BorderBrush="#2E2E3A"
+                    <Border Grid.Row="0" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}"
                             BorderThickness="0,0,0,1" Padding="24,14">
                         <Grid>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -293,22 +308,22 @@
                                         Padding="10,6" Click="EndStudy_Click"/>
                                 <TextBlock x:Name="StudyTitle" Text="🃏 Flashcards"
                                            FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold"
-                                           Foreground="#E8E8F0" VerticalAlignment="Center" Margin="16,0"/>
+                                           Foreground="{DynamicResource Text}" VerticalAlignment="Center" Margin="16,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <TextBlock x:Name="TimerText" Text=""
                                            FontFamily="Segoe UI Mono" FontSize="14" FontWeight="Bold"
-                                           Foreground="#E5C07B" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                           Foreground="{DynamicResource Yellow}" VerticalAlignment="Center" Margin="0,0,16,0"/>
                                 <TextBlock x:Name="StudyCounter" Text="1/10"
-                                           FontFamily="Segoe UI" FontSize="13" Foreground="#8888A0"
+                                           FontFamily="Segoe UI" FontSize="13" Foreground="{DynamicResource Muted}"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
                         </Grid>
                     </Border>
                     <!-- Progress bar -->
                     <Border x:Name="ProgressBorder" Grid.Row="0" VerticalAlignment="Bottom"
-                            Height="3" Background="#1C1C22" Margin="0,0,0,0">
-                        <Border x:Name="ProgressFill" Background="#4FAC82" HorizontalAlignment="Left" Width="0"/>
+                            Height="3" Background="{DynamicResource Surface}" Margin="0,0,0,0">
+                        <Border x:Name="ProgressFill" Background="{DynamicResource Teal}" HorizontalAlignment="Left" Width="0"/>
                     </Border>
                     <!-- Study content -->
                     <Grid Grid.Row="1" x:Name="StudyContent"/>

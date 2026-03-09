@@ -22,6 +22,49 @@
     <SolidColorBrush x:Key="Blue"     Color="#61AFEF"/>
     <SolidColorBrush x:Key="Sidebar"  Color="#0E0E12"/>
 
+    <!-- SCROLLBAR -->
+    <Style TargetType="ScrollBar">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="Width" Value="8"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ScrollBar">
+            <Grid x:Name="Bg" Background="Transparent" SnapsToDevicePixels="true">
+              <Border BorderThickness="0" Background="Transparent"/>
+              <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}">
+                <Track.DecreaseRepeatButton>
+                  <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Opacity="0"/>
+                </Track.DecreaseRepeatButton>
+                <Track.IncreaseRepeatButton>
+                  <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Opacity="0"/>
+                </Track.IncreaseRepeatButton>
+                <Track.Thumb>
+                  <Thumb>
+                    <Thumb.Template>
+                      <ControlTemplate TargetType="Thumb">
+                        <Border x:Name="ThumbBorder" CornerRadius="4" Background="{DynamicResource Border2}" Opacity="0.5"/>
+                        <ControlTemplate.Triggers>
+                          <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ThumbBorder" Property="Background" Value="{DynamicResource Dim}"/>
+                            <Setter TargetName="ThumbBorder" Property="Opacity" Value="0.8"/>
+                          </Trigger>
+                          <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="ThumbBorder" Property="Background" Value="{DynamicResource Muted}"/>
+                            <Setter TargetName="ThumbBorder" Property="Opacity" Value="1"/>
+                          </Trigger>
+                        </ControlTemplate.Triggers>
+                      </ControlTemplate>
+                    </Thumb.Template>
+                  </Thumb>
+                </Track.Thumb>
+              </Track>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
     <!-- SUCCESS BUTTON & PRIMARY BUTTON -->
     <Style x:Key="PrimaryButton" TargetType="Button">
       <Setter Property="Foreground" Value="#FFFFFF"/>
@@ -97,13 +140,13 @@
 
     <!-- GHOST BUTTON -->
     <Style x:Key="GhostButton" TargetType="Button">
-      <Setter Property="Background"      Value="#121216"/>
-      <Setter Property="Foreground"      Value="#8888A0"/>
+      <Setter Property="Background"      Value="{DynamicResource Bg}"/>
+      <Setter Property="Foreground"      Value="{DynamicResource Muted}"/>
       <Setter Property="FontFamily"      Value="Segoe UI"/>
       <Setter Property="FontSize"        Value="13"/>
       <Setter Property="Padding"         Value="14,8"/>
       <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="BorderBrush"     Value="#2E2E3A"/>
+      <Setter Property="BorderBrush"     Value="{DynamicResource Border}"/>
       <Setter Property="Cursor"          Value="Hand"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -117,8 +160,8 @@
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="#5CDEB5"/>
-                <Setter TargetName="border" Property="BorderBrush" Value="#4FAC82"/>
-                <Setter TargetName="border" Property="Background" Value="#1A2E24"/>
+                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                <Setter TargetName="border" Property="Background" Value="{DynamicResource TealBg}"/>
                 <Setter TargetName="border" Property="Effect">
                   <Setter.Value>
                     <DropShadowEffect BlurRadius="12" ShadowDepth="0" Color="#4FAC82" Opacity="0.4"/>
@@ -126,9 +169,9 @@
                 </Setter>
               </Trigger>
               <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Foreground" Value="#3A8A68"/>
-                <Setter TargetName="border" Property="BorderBrush" Value="#3A8A68"/>
-                <Setter TargetName="border" Property="Background" Value="#101D17"/>
+                <Setter Property="Foreground" Value="{DynamicResource Teal2}"/>
+                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Teal2}"/>
+                <Setter TargetName="border" Property="Background" Value="{DynamicResource TealBg}"/>
               </Trigger>
               <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.4"/>
@@ -141,13 +184,13 @@
 
     <!-- DANGER BUTTON -->
     <Style x:Key="DangerButton" TargetType="Button">
-      <Setter Property="Background"      Value="#121216"/>
-      <Setter Property="Foreground"      Value="#E06C75"/>
+      <Setter Property="Background"      Value="{DynamicResource Bg}"/>
+      <Setter Property="Foreground"      Value="{DynamicResource Red}"/>
       <Setter Property="FontFamily"      Value="Segoe UI"/>
       <Setter Property="FontSize"        Value="13"/>
       <Setter Property="Padding"         Value="14,8"/>
       <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="BorderBrush"     Value="#4A2830"/>
+      <Setter Property="BorderBrush"     Value="{DynamicResource Border}"/>
       <Setter Property="Cursor"          Value="Hand"/>
       <Setter Property="Template">
         <Setter.Value>
@@ -161,8 +204,8 @@
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="#F08A93"/>
-                <Setter TargetName="border" Property="BorderBrush" Value="#E06C75"/>
-                <Setter TargetName="border" Property="Background" Value="#2E1A1E"/>
+                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource Red}"/>
+                <Setter TargetName="border" Property="Background" Value="{DynamicResource RedBg}"/>
                 <Setter TargetName="border" Property="Effect">
                   <Setter.Value>
                     <DropShadowEffect BlurRadius="12" ShadowDepth="0" Color="#E06C75" Opacity="0.4"/>
@@ -172,7 +215,7 @@
               <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Foreground" Value="#C05860"/>
                 <Setter TargetName="border" Property="BorderBrush" Value="#C05860"/>
-                <Setter TargetName="border" Property="Background" Value="#1C1012"/>
+                <Setter TargetName="border" Property="Background" Value="{DynamicResource RedBg}"/>
               </Trigger>
               <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" Value="0.4"/>
@@ -186,7 +229,7 @@
     <!-- ICON BUTTON -->
     <Style x:Key="IconButton" TargetType="Button">
       <Setter Property="Background"      Value="Transparent"/>
-      <Setter Property="Foreground"      Value="#8888A0"/>
+      <Setter Property="Foreground"      Value="{DynamicResource Muted}"/>
       <Setter Property="FontSize"        Value="14"/>
       <Setter Property="Width"           Value="32"/>
       <Setter Property="Height"          Value="32"/>
@@ -200,8 +243,8 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#242430"/>
-                <Setter Property="Foreground" Value="#E8E8F0"/>
+                <Setter Property="Background" Value="{DynamicResource Surface2}"/>
+                <Setter Property="Foreground" Value="{DynamicResource Text}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -212,7 +255,7 @@
     <!-- NAV BUTTON -->
     <Style x:Key="NavButton" TargetType="ToggleButton">
       <Setter Property="Background"      Value="Transparent"/>
-      <Setter Property="Foreground"      Value="#8888A0"/>
+      <Setter Property="Foreground"      Value="{DynamicResource Muted}"/>
       <Setter Property="FontFamily"      Value="Segoe UI"/>
       <Setter Property="FontSize"        Value="13"/>
       <Setter Property="FontWeight"      Value="Medium"/>
@@ -229,15 +272,15 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Foreground"       Value="#4FAC82"/>
+                <Setter Property="Foreground"       Value="{DynamicResource Teal}"/>
                 <Setter Property="FontWeight"       Value="SemiBold"/>
-                <Setter TargetName="bd" Property="Background" Value="#1A2E24"/>
-                <Setter TargetName="bd" Property="BorderBrush" Value="#4FAC82"/>
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource TealBg}"/>
+                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource Teal}"/>
                 <Setter TargetName="bd" Property="BorderThickness" Value="2,0,0,0"/>
               </Trigger>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="#E8E8F0"/>
-                <Setter TargetName="bd" Property="Background" Value="#1C1C28"/>
+                <Setter Property="Foreground" Value="{DynamicResource Text}"/>
+                <Setter TargetName="bd" Property="Background" Value="{DynamicResource Surface2}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -247,14 +290,14 @@
 
     <!-- DARK TEXTBOX -->
     <Style x:Key="DarkTextBox" TargetType="TextBox">
-      <Setter Property="Background"      Value="#242430"/>
-      <Setter Property="Foreground"      Value="#E8E8F0"/>
-      <Setter Property="CaretBrush"      Value="#4FAC82"/>
+      <Setter Property="Background"      Value="{DynamicResource Surface2}"/>
+      <Setter Property="Foreground"      Value="{DynamicResource Text}"/>
+      <Setter Property="CaretBrush"      Value="{DynamicResource Teal}"/>
       <Setter Property="FontFamily"      Value="Segoe UI"/>
       <Setter Property="FontSize"        Value="13"/>
       <Setter Property="Padding"         Value="10,9"/>
       <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="BorderBrush"     Value="#2E2E3A"/>
+      <Setter Property="BorderBrush"     Value="{DynamicResource Border}"/>
       <Setter Property="Template">
         <Setter.Value>
           <ControlTemplate TargetType="TextBox">
@@ -266,7 +309,7 @@
             </Border>
             <ControlTemplate.Triggers>
               <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="#4FAC82"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Teal}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -276,18 +319,18 @@
 
     <!-- DARK COMBOBOX -->
     <Style x:Key="DarkComboBox" TargetType="ComboBox">
-      <Setter Property="Background"      Value="#242430"/>
-      <Setter Property="Foreground"      Value="#E8E8F0"/>
+      <Setter Property="Background"      Value="{DynamicResource Surface2}"/>
+      <Setter Property="Foreground"      Value="{DynamicResource Text}"/>
       <Setter Property="FontFamily"      Value="Segoe UI"/>
       <Setter Property="FontSize"        Value="13"/>
       <Setter Property="Padding"         Value="10,8"/>
-      <Setter Property="BorderBrush"     Value="#2E2E3A"/>
+      <Setter Property="BorderBrush"     Value="{DynamicResource Border}"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="ItemContainerStyle">
         <Setter.Value>
           <Style TargetType="ComboBoxItem">
             <Setter Property="Background"  Value="Transparent"/>
-            <Setter Property="Foreground"  Value="#B0B0C8"/>
+            <Setter Property="Foreground"  Value="{DynamicResource Muted}"/>
             <Setter Property="FontFamily"  Value="Segoe UI"/>
             <Setter Property="FontSize"    Value="13"/>
             <Setter Property="Padding"     Value="12,9"/>
@@ -303,14 +346,14 @@
                   </Border>
                   <ControlTemplate.Triggers>
                     <Trigger Property="IsHighlighted" Value="True">
-                      <Setter TargetName="Bd" Property="Background" Value="#1C2830"/>
-                      <Setter TargetName="Bd" Property="BorderBrush" Value="#4FAC82"/>
-                      <Setter Property="Foreground" Value="#E8E8F0"/>
+                      <Setter TargetName="Bd" Property="Background" Value="{DynamicResource TealBg}"/>
+                      <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                      <Setter Property="Foreground" Value="{DynamicResource Text}"/>
                     </Trigger>
                     <Trigger Property="IsSelected" Value="True">
-                      <Setter TargetName="Bd" Property="Background" Value="#152420"/>
-                      <Setter TargetName="Bd" Property="BorderBrush" Value="#4FAC82"/>
-                      <Setter Property="Foreground" Value="#4FAC82"/>
+                      <Setter TargetName="Bd" Property="Background" Value="{DynamicResource TealBg}"/>
+                      <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                      <Setter Property="Foreground" Value="{DynamicResource Teal}"/>
                     </Trigger>
                   </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -324,8 +367,8 @@
           <ControlTemplate TargetType="ComboBox">
             <Grid>
               <Border x:Name="MainBorder"
-                      Background="#242430"
-                      BorderBrush="#2E2E3A"
+                      Background="{DynamicResource Surface2}"
+                      BorderBrush="{DynamicResource Border}"
                       BorderThickness="1"
                       CornerRadius="8">
                 <Grid>
@@ -341,7 +384,7 @@
                                     Margin="12,0,0,0"
                                     VerticalAlignment="Center"/>
                   <TextBlock Grid.Column="1" Text="▾" FontSize="11"
-                             Foreground="#8888A0"
+                             Foreground="{DynamicResource Muted}"
                              VerticalAlignment="Center"
                              HorizontalAlignment="Center"
                              IsHitTestVisible="False"/>
@@ -361,8 +404,8 @@
                      PopupAnimation="Fade">
                 <Border MinWidth="{TemplateBinding ActualWidth}"
                         MaxHeight="260"
-                        Background="#242430"
-                        BorderBrush="#3A3A48"
+                        Background="{DynamicResource Surface2}"
+                        BorderBrush="{DynamicResource Border2}"
                         BorderThickness="1"
                         CornerRadius="8"
                         Margin="0,2,0,0">
@@ -370,17 +413,17 @@
                     <DropShadowEffect BlurRadius="20" ShadowDepth="4" Color="Black" Opacity="0.5"/>
                   </Border.Effect>
                   <ScrollViewer Background="Transparent">
-                    <StackPanel IsItemsHost="True" Background="#242430"/>
+                    <StackPanel IsItemsHost="True" Background="{DynamicResource Surface2}"/>
                   </ScrollViewer>
                 </Border>
               </Popup>
             </Grid>
             <ControlTemplate.Triggers>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#4FAC82"/>
+                <Setter TargetName="MainBorder" Property="BorderBrush" Value="{DynamicResource Teal}"/>
               </Trigger>
               <Trigger Property="IsDropDownOpen" Value="True">
-                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#4FAC82"/>
+                <Setter TargetName="MainBorder" Property="BorderBrush" Value="{DynamicResource Teal}"/>
               </Trigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>

@@ -89,6 +89,7 @@ public class DataService
                 w.En      ??= "";
                 w.Tr      ??= "";
                 w.Example ??= "";
+                w.Level   ??= "";   // CEFR seviyesi — eski JSON'dan null gelebilir
                 w.Id      ??= Guid.NewGuid().ToString();
             }
             set.Id          ??= Guid.NewGuid().ToString();

@@ -48,6 +48,7 @@ public static class L
     public static string EditSet     => TR ? "✏ Düzenle"    : "✏ Edit";
     public static string DeleteSet   => TR ? "🗑 Sil"       : "🗑 Delete";
     public static string MarkLearned => TR ? "Öğrendim olarak işaretle" : "Mark as learned";
+    public static string DetailSearchHint => TR ? "🔍  Kelime ara..." : "🔍  Search words in this set...";
     public static string Flashcards  => TR ? "Kartlar"      : "Flashcards";
     public static string Learn       => TR ? "Öğren"        : "Learn";
     public static string Test        => TR ? "Test"         : "Test";
