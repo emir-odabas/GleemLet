@@ -15,6 +15,7 @@ public class NavigationService
     // Navigation events
     public event Action<string>? PageChanged;
     public event Action<string, Models.StudyMode>? StudyRequested;
+    public event Action<string>? DetailRequested;
     public event Action? NewSetRequested;
     public event Action? RebuildRequested;
     public event Action? AvatarChanged;
@@ -45,6 +46,11 @@ public class NavigationService
     public void RequestStudy(string setId, Models.StudyMode mode)
     {
         StudyRequested?.Invoke(setId, mode);
+    }
+    
+    public void RequestDetail(string setId)
+    {
+        DetailRequested?.Invoke(setId);
     }
 
     public void RequestNewSet()  => NewSetRequested?.Invoke();

@@ -92,6 +92,17 @@ public class DataService
                 w.Level   ??= "";   // CEFR seviyesi — eski JSON'dan null gelebilir
                 w.Id      ??= Guid.NewGuid().ToString();
             }
+            // Migration: Ensure sample data or early words get levels if missing
+            foreach (var w in set.Words)
+            {
+                if (string.IsNullOrEmpty(w.Level))
+                {
+                    // Random assignment for variety if it's sample data, or default to A1
+                    if (set.Category == "Academic") w.Level = "B2";
+                    else if (set.Category == "Business") w.Level = "B1";
+                    else w.Level = "A1";
+                }
+            }
             set.Id          ??= Guid.NewGuid().ToString();
             set.Name        ??= "";
             set.Description ??= "";

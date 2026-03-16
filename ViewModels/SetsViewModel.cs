@@ -83,4 +83,10 @@ public partial class SetsViewModel : BaseViewModel
     {
         NavigationService.Instance.RequestStudy(set.Id, StudyMode.Test);
     }
+
+    [RelayCommand]
+    private void OpenDetail(FlashcardSet set)
+    {
+        NavigationService.Instance.RequestDetail(set.Id);
+    }
 }

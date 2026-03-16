@@ -123,14 +123,18 @@ public partial class MainWindow
             Background = new SolidColorBrush(bg), BorderBrush = new SolidColorBrush(fg),
             BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(4),
             Padding = new Thickness(6, 2, 6, 2), Margin = new Thickness(8, 0, 6, 0),
-            VerticalAlignment = VerticalAlignment.Center, MinWidth = 32, Visibility = Visibility.Visible
+            VerticalAlignment = VerticalAlignment.Center, MinWidth = 32, 
+            Visibility = hasLevel ? Visibility.Visible : Visibility.Collapsed
         };
-        badge.Child = new TextBlock
+        if (hasLevel)
         {
-            Text = hasLevel ? level! : "—", FontFamily = new System.Windows.Media.FontFamily("Segoe UI"),
-            FontSize = 10, FontWeight = hasLevel ? FontWeights.Bold : FontWeights.Normal,
-            Foreground = new SolidColorBrush(fg), HorizontalAlignment = HorizontalAlignment.Center
-        };
+            badge.Child = new TextBlock
+            {
+                Text = level!, FontFamily = new System.Windows.Media.FontFamily("Segoe UI"),
+                FontSize = 10, FontWeight = FontWeights.Bold,
+                Foreground = new SolidColorBrush(fg), HorizontalAlignment = HorizontalAlignment.Center
+            };
+        }
         return badge;
     }
 

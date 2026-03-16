@@ -61,6 +61,11 @@ public partial class MainWindow : Window
             });
         };
 
+        NavigationService.Instance.DetailRequested += setId =>
+        {
+            Dispatcher.Invoke(() => ShowDetail(setId));
+        };
+
         NavigationService.Instance.NewSetRequested += () =>
         {
             Dispatcher.Invoke(() => OpenSetEditor(null));

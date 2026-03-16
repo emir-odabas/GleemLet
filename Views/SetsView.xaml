@@ -95,6 +95,11 @@
                     <DataTemplate>
                         <!-- Set Card Template -->
                         <Border Margin="0,0,12,12" Width="240" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="16" Cursor="Hand">
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" 
+                                              Command="{Binding DataContext.OpenDetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              CommandParameter="{Binding}"/>
+                            </Border.InputBindings>
                             <StackPanel>
                                 <Grid Margin="0,0,0,4">
                                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" Foreground="{DynamicResource Text}" TextWrapping="Wrap"/>
