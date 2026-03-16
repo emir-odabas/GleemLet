@@ -42,9 +42,9 @@ public partial class MainWindow
         var words = set.Words.AsEnumerable();
         if (!string.IsNullOrWhiteSpace(wordFilter))
             words = words.Where(w =>
-                (w.En ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase) ||
-                (w.Tr ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase) ||
-                (w.Level ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase));
+                    (w.En ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase) ||
+                    (w.Tr ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase) ||
+                    (w.Level ?? "").Contains(wordFilter, StringComparison.OrdinalIgnoreCase));
 
         foreach (var w in words)
         {
@@ -109,14 +109,14 @@ public partial class MainWindow
     {
         bool hasLevel = !string.IsNullOrEmpty(level);
         Color bg, fg;
-        switch (level)
+        switch (level?.ToUpper())
         {
             case "A1": case "A2": bg = Color.FromRgb(26, 58, 38);  fg = Color.FromRgb(80, 200, 120);  break;
             case "B1":            bg = Color.FromRgb(56, 50, 20);  fg = Color.FromRgb(229, 192, 80);  break;
             case "B2":            bg = Color.FromRgb(60, 44, 16);  fg = Color.FromRgb(229, 150, 60);  break;
             case "C1":            bg = Color.FromRgb(58, 26, 30);  fg = Color.FromRgb(224, 108, 117); break;
             case "C2":            bg = Color.FromRgb(50, 20, 58);  fg = Color.FromRgb(198, 120, 240); break;
-            default:              bg = Color.FromRgb(30, 30, 38);  fg = Color.FromRgb(60, 60, 80);    break;
+            default:              bg = Color.FromRgb(30, 30, 38);  fg = Color.FromRgb(136, 136, 160); break;
         }
         var badge = new Border
         {

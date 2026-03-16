@@ -51,7 +51,8 @@ public partial class SetsViewModel : BaseViewModel
                 s.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
                 s.Words.Any(w =>
                     (w.En ?? "").Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-                    (w.Tr ?? "").Contains(SearchText, StringComparison.OrdinalIgnoreCase)));
+                    (w.Tr ?? "").Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    (w.Level ?? "").Contains(SearchText, StringComparison.OrdinalIgnoreCase)));
 
         if (!string.IsNullOrEmpty(SelectedCategory))
             sets = sets.Where(s => s.Category == SelectedCategory);

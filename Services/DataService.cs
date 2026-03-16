@@ -231,15 +231,15 @@ public class DataService
             Name = "IELTS Essentials", Description = "Common IELTS vocabulary", Category = "Academic",
             Words =
             [
-                // FIX: Tr alanları artık gerçek Türkçe karşılıklar
-                new(){En="ephemeral",  Tr="kısa ömürlü",      Example="Fame is ephemeral."},
-                new(){En="resilient",  Tr="dirençli",          Example="A resilient leader."},
-                new(){En="eloquent",   Tr="belagatli",         Example="An eloquent speech."},
-                new(){En="ubiquitous", Tr="her yerde bulunan", Example="Smartphones are ubiquitous."},
-                new(){En="ambiguous",  Tr="belirsiz",          Example="An ambiguous statement."},
-                new(){En="meticulous", Tr="titiz",             Example="Meticulous planning."},
-                new(){En="pragmatic",  Tr="pratik",            Example="A pragmatic approach."},
-                new(){En="tenacious",  Tr="azimli",            Example="A tenacious athlete."},
+                // FIX: Tr alanları artık gerçek Türkçe karşılıklar ve Seviyeler eklendi
+                new(){En="ephemeral",  Tr="kısa ömürlü",      Example="Fame is ephemeral.", Level="C1"},
+                new(){En="resilient",  Tr="dirençli",          Example="A resilient leader.", Level="B2"},
+                new(){En="eloquent",   Tr="belagatli",         Example="An eloquent speech.", Level="B1"},
+                new(){En="ubiquitous", Tr="her yerde bulunan", Example="Smartphones are ubiquitous.", Level="C2"},
+                new(){En="ambiguous",  Tr="belirsiz",          Example="An ambiguous statement.", Level="B2"},
+                new(){En="meticulous", Tr="titiz",             Example="Meticulous planning.", Level="C1"},
+                new(){En="pragmatic",  Tr="pratik",            Example="A pragmatic approach.", Level="B1"},
+                new(){En="tenacious",  Tr="azimli",            Example="A tenacious athlete.", Level="C1"},
             ]
         });
         Data.Sets.Add(new()
@@ -247,10 +247,10 @@ public class DataService
             Name = "Business English", Description = "Professional vocabulary", Category = "Business",
             Words =
             [
-                new(){En="negotiate",   Tr="müzakere etmek", Example="We need to negotiate."},
-                new(){En="stakeholder", Tr="paydaş",         Example="All stakeholders agree."},
-                new(){En="leverage",    Tr="avantaj sağlamak", Example="Leverage your strengths."},
-                new(){En="synergy",     Tr="sinerji",         Example="Team synergy matters."},
+                new(){En="negotiate",   Tr="müzakere etmek", Example="We need to negotiate.", Level="B2"},
+                new(){En="stakeholder", Tr="paydaş",         Example="All stakeholders agree.", Level="C1"},
+                new(){En="leverage",    Tr="avantaj sağlamak", Example="Leverage your strengths.", Level="B2"},
+                new(){En="synergy",     Tr="sinerji",         Example="Team synergy matters.", Level="B1"},
             ]
         });
     }
