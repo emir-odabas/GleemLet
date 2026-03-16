@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using GleemLet.Models;
 using GleemLet.Services;
+using MaterialDesignThemes.Wpf;
 using SoundSvc = GleemLet.Services.SoundService;
 
 namespace GleemLet;
@@ -39,6 +40,9 @@ public partial class MainWindow
 
         _currentPage = "study";
         HideAllPages();
+        foreach (var nb in new[] { NavHome, NavSets, NavStats, NavBadges, NavProfile })
+            nb.IsChecked = false;
+
         PageStudy.Visibility = Visibility.Visible;
         StudyTitle.Text = mode.ToLabel();
 
@@ -67,7 +71,9 @@ public partial class MainWindow
 
         var w   = _studyQueue[_studyIndex];
         double pct = _studyQueue.Count > 0 ? (double)_studyIndex / _studyQueue.Count : 0;
-        StudyCounter.Text = $"{_studyIndex + 1}/{_studyQueue.Count}  ·  ✓{_studyCorrect} ✗{_studyWrong}";
+        StudyCounter.Text     = $"{_studyIndex + 1}/{_studyQueue.Count}";
+        StudyCorrectText.Text = _studyCorrect.ToString();
+        StudyWrongText.Text   = _studyWrong.ToString();
         Dispatcher.InvokeAsync(() => ProgressFill.Width = ProgressBorder.ActualWidth * pct, DispatcherPriority.Loaded);
 
         switch (_studyMode)
@@ -422,8 +428,8 @@ public partial class MainWindow
         var sv    = new ScrollViewer { VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         var panel = new StackPanel { HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, Margin = new Thickness(40) };
 
-        var emoji = pct == 100 ? "🏆" : pct >= 80 ? "🎉" : pct >= 60 ? "👍" : "💪";
-        panel.Children.Add(MakeText(emoji, 56, "#E8E8F0", margin: new Thickness(0, 0, 0, 8)));
+        var resultIcon = pct == 100 ? PackIconKind.Trophy : pct >= 80 ? PackIconKind.PartyPopper : pct >= 60 ? PackIconKind.ThumbUp : PackIconKind.ArmFlex;
+        panel.Children.Add(new PackIcon { Kind = resultIcon, Width = 64, Height = 64, Foreground = new SolidColorBrush(pct >= 60 ? Color.FromRgb(79, 172, 130) : Color.FromRgb(224, 108, 117)), HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 0, 0, 16) });
         panel.Children.Add(MakeText(pct == 100 ? L.Perfect : pct >= 80 ? L.GreatJob : pct >= 60 ? L.GoodEffort : L.KeepGoing, 28, "#E8E8F0", isBold: true, margin: new Thickness(0, 0, 0, 6)));
         panel.Children.Add(MakeText(L.Score(pct), 18, "#4FAC82", isBold: true, margin: new Thickness(0, 0, 0, 24)));
 

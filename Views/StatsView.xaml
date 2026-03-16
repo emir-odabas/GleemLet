@@ -1,0 +1,108 @@
+<UserControl x:Class="GleemLet.Views.StatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GleemLet.Views"
+             xmlns:vm="clr-namespace:GleemLet.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=vm:StatsViewModel}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,28,32,32">
+            
+            <TextBlock Text="{Binding StatsTitle}" Style="{StaticResource SectionTitle}" Margin="0,0,0,24" FontSize="24"/>
+
+            <!-- Top Stats Row -->
+            <UniformGrid Columns="3" Margin="0,0,0,24">
+                <local:StatBox Value="{Binding Streak, StringFormat='{}{0}'}" Icon="Fire" Label="{Binding StreakLabel}" Margin="0,0,10,10" MainColor="{DynamicResource Yellow}"/>
+                <local:StatBox Value="{Binding Level, StringFormat='{}Lv.{0}'}" Icon="Star" Label="{Binding LevelLabel}" Margin="0,0,10,10" MainColor="{DynamicResource Purple}"/>
+                <local:StatBox Value="{Binding TotalXp}" Icon="Shimmer" Label="{Binding TotalXpLabel}" Margin="0,0,0,10" MainColor="{DynamicResource Teal}"/>
+                <local:StatBox Value="{Binding TotalSessions}" Icon="BookMultiple" Label="{Binding SessionsLabel}" Margin="0,0,10,0" MainColor="{DynamicResource Blue}"/>
+                <local:StatBox Value="{Binding AvgAccuracy, StringFormat='{}{0:F0}%'}" Icon="Target" Label="{Binding AccuracyLabel}" Margin="0,0,10,0" MainColor="{DynamicResource Red}"/>
+                <local:StatBox Value="{Binding StudyTimeFormatted}" Icon="Timer" Label="{Binding TimeLabel}" MainColor="{DynamicResource Yellow}"/>
+                <!-- Wait, WidthPercentageConverter doesn't handle time. I should probably use a simple string property in ViewModel or a specific converter.
+                     Actually, looking at MainWindow.StatsAndProfile.cs, it does: totalTime < 60 ? $"{totalTime}s" : $"{totalTime / 60}m"
+                     I'll assume ViewModel should ideally provide formatted strings or I can use a simple binding if I had a time converter.
+                     For now, I'll use a placeholder or let's assume the ViewModel might be updated or I'll just show raw seconds if I must.
+                     Actually, I'll just use a Run in the StatBox or update the StatBox to be more flexible.
+                     Wait, the StatBox I created earlier: 
+                     <TextBlock Text="{TemplateBinding Value}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource Text}"/>
+                     It's quite simple. I'll just bind to the properties.
+                -->
+            </UniformGrid>
+
+            <!-- Progress Per Set -->
+            <TextBlock Text="{Binding ProgressPerSetTitle}" Style="{StaticResource SectionTitle}" Margin="0,0,0,16"/>
+            <ItemsControl ItemsSource="{Binding SetsProgress}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="16,12" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource Text}" VerticalAlignment="Center"/>
+                                
+                                <Border Grid.Column="1" Background="{DynamicResource Surface2}" Height="6" CornerRadius="3" VerticalAlignment="Center" Margin="16,0">
+                                    <Border Background="{DynamicResource Teal}" CornerRadius="3" HorizontalAlignment="Left">
+                                        <Border.Width>
+                                            <MultiBinding Converter="{StaticResource WidthPercentageConverter}">
+                                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource AncestorType=Border, AncestorLevel=1}"/>
+                                                <Binding Path="ProgressPercent"/>
+                                            </MultiBinding>
+                                        </Border.Width>
+                                    </Border>
+                                </Border>
+                                
+                                <TextBlock Grid.Column="2" Text="{Binding Progress, StringFormat='{}{0:F0}%'}" FontWeight="Bold" Foreground="{DynamicResource Teal}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Recent Activity -->
+            <TextBlock Text="{Binding RecentSessionsTitle}" Style="{StaticResource SectionTitle}" Margin="0,24,0,16"/>
+            <ItemsControl ItemsSource="{Binding RecentSessions}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="8" Padding="16,10" Margin="0,0,0,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding SetName}" FontSize="13" Foreground="{DynamicResource Text}" FontWeight="Bold"/>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource Dim}" Margin="0,2,0,0">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0:MMM d, yyyy} · {1}s">
+                                                <Binding Path="Date"/>
+                                                <Binding Path="DurationSeconds"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </StackPanel>
+                                <Border Grid.Column="1" Background="{DynamicResource TealBg}" CornerRadius="6" Padding="8,4" VerticalAlignment="Center">
+                                    <TextBlock Foreground="{DynamicResource Teal}" FontWeight="Bold" FontSize="12">
+                                        <Run Text="{Binding Accuracy, StringFormat='{}{0:F0}%'}"/>
+                                        <Run Text=" · "/>
+                                        <Run Text="{Binding Correct, Mode=OneWay}"/>
+                                        <Run Text="/"/>
+                                        <Run Text="{Binding Total, Mode=OneWay}"/>
+                                    </TextBlock>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

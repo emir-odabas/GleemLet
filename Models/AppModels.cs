@@ -17,11 +17,11 @@ public static class StudyModeExtensions
 {
     public static string ToIcon(this StudyMode mode) => mode switch
     {
-        StudyMode.Flashcard => "📇",
-        StudyMode.Learn     => "💡",
-        StudyMode.Test      => "📝",
-        StudyMode.Timed     => "⏰",
-        _                   => "📖"
+        StudyMode.Flashcard => "Cards",
+        StudyMode.Learn     => "Head",
+        StudyMode.Test      => "PencilBox",
+        StudyMode.Timed     => "TimerSand",
+        _                   => "Book"
     };
 
     public static string ToLabel(this StudyMode mode)
@@ -29,10 +29,10 @@ public static class StudyModeExtensions
         bool tr = L.Lang == AppLanguage.Turkish;
         return mode switch
         {
-            StudyMode.Flashcard => tr ? "📇 Kartlar"   : "📇 Flashcards",
-            StudyMode.Learn     => tr ? "💡 Öğren"     : "💡 Learn",
-            StudyMode.Test      => tr ? "📝 Test"       : "📝 Test",
-            StudyMode.Timed     => tr ? "⏰ Zamanlı"   : "⏰ Timed",
+            StudyMode.Flashcard => tr ? "Kartlar"   : "Flashcards",
+            StudyMode.Learn     => tr ? "Öğren"     : "Learn",
+            StudyMode.Test      => tr ? "Test"       : "Test",
+            StudyMode.Timed     => tr ? "Zamanlı"   : "Timed",
             _                   => mode.ToString()
         };
     }
@@ -82,6 +82,7 @@ public class FlashcardSet
     public bool IsFavorite  { get; set; }
     public int    LearnedCount => Words.Count(w => w.Learned);
     public double Progress     => Words.Count > 0 ? (double)LearnedCount / Words.Count * 100 : 0;
+    public double ProgressPercent => Progress / 100.0;
 }
 
 public class Badge

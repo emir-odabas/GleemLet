@@ -1,0 +1,270 @@
+<UserControl x:Class="GleemLet.Views.ProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"              xmlns:local="clr-namespace:GleemLet.Views"
+              xmlns:vm="clr-namespace:GleemLet.ViewModels"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="1200" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=vm:ProfileViewModel}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,28,32,32">
+            
+            <TextBlock Text="{Binding ProfileHeader}" Style="{StaticResource SectionTitle}" Margin="0,0,0,24" FontSize="24"/>
+
+            <!-- Profile Info Section -->
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{Binding ProfileHeader}" FontSize="10" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,14"/>
+                    
+                    <TextBlock Text="{Binding DisplayNameLabel}" FontSize="13" Foreground="{DynamicResource Text}" FontWeight="Bold" Margin="0,0,0,8"/>
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DarkTextBox}" Margin="0,0,0,16" Padding="10,8"/>
+
+                    <TextBlock Text="{Binding LearningGoalLabel}" FontSize="13" Foreground="{DynamicResource Text}" FontWeight="Bold" Margin="0,0,0,8"/>
+                    <TextBox Text="{Binding Goal, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DarkTextBox}" Margin="0,0,0,20" Padding="10,8"/>
+
+                    <Button Content="{Binding SaveLabel}" Command="{Binding SaveCommand}" HorizontalAlignment="Left" Width="120" Height="36" Style="{StaticResource PrimaryButton}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Preferences Section -->
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{Binding PreferencesHeader}" FontSize="10" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,14"/>
+                    
+                    <Grid Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{Binding SoundEffectsLabel}" FontSize="13" Foreground="{DynamicResource Text}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding SoundDesc}" FontSize="11" Foreground="{DynamicResource Muted}"/>
+                        </StackPanel>
+                        <CheckBox IsChecked="{Binding SoundEnabled}" Command="{Binding SaveCommand}" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{DynamicResource {x:Type CheckBox}}"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{Binding ShuffleDefaultLabel}" FontSize="13" Foreground="{DynamicResource Text}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding ShuffleDesc}" FontSize="11" Foreground="{DynamicResource Muted}"/>
+                        </StackPanel>
+                        <CheckBox IsChecked="{Binding ShuffleDefault}" Command="{Binding SaveCommand}" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{DynamicResource {x:Type CheckBox}}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Appearance Section (Theme & Accent) -->
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{Binding ThemeHeader}" FontSize="10" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,14"/>
+                    
+                    <TextBlock Text="Theme" FontSize="13" Foreground="{DynamicResource Text}" FontWeight="Bold" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <Button Content="Dark" Width="100" Margin="0,0,10,0" Command="{Binding SetThemeCommand}" CommandParameter="dark">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource GhostButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Theme}" Value="dark">
+                                            <Setter Property="Background" Value="{DynamicResource TealBg}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource Teal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="Light" Width="100" Command="{Binding SetThemeCommand}" CommandParameter="light">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource GhostButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Theme}" Value="light">
+                                            <Setter Property="Background" Value="{DynamicResource TealBg}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource Teal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+
+                    <TextBlock Text="Accent Color" FontSize="11" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style x:Key="AccentCircle" TargetType="Border">
+                                <Setter Property="Width" Value="28"/>
+                                <Setter Property="Height" Value="28"/>
+                                <Setter Property="CornerRadius" Value="14"/>
+                                <Setter Property="Margin" Value="0,0,8,0"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="BorderBrush" Value="White"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        
+                        <Border Background="#4FAC82" ToolTip="Teal">
+                            <Border.InputBindings><MouseBinding MouseAction="LeftClick" Command="{Binding SetAccentCommand}" CommandParameter="teal"/></Border.InputBindings>
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource AccentCircle}">
+                                    <Style.Triggers><DataTrigger Binding="{Binding AccentColor}" Value="teal"><Setter Property="BorderThickness" Value="3"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border Background="#9B59B6" ToolTip="Purple">
+                            <Border.InputBindings><MouseBinding MouseAction="LeftClick" Command="{Binding SetAccentCommand}" CommandParameter="purple"/></Border.InputBindings>
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource AccentCircle}">
+                                    <Style.Triggers><DataTrigger Binding="{Binding AccentColor}" Value="purple"><Setter Property="BorderThickness" Value="3"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border Background="#61AFEF" ToolTip="Blue">
+                            <Border.InputBindings><MouseBinding MouseAction="LeftClick" Command="{Binding SetAccentCommand}" CommandParameter="blue"/></Border.InputBindings>
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource AccentCircle}">
+                                    <Style.Triggers><DataTrigger Binding="{Binding AccentColor}" Value="blue"><Setter Property="BorderThickness" Value="3"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border Background="#E5A44A" ToolTip="Orange">
+                            <Border.InputBindings><MouseBinding MouseAction="LeftClick" Command="{Binding SetAccentCommand}" CommandParameter="orange"/></Border.InputBindings>
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource AccentCircle}">
+                                    <Style.Triggers><DataTrigger Binding="{Binding AccentColor}" Value="orange"><Setter Property="BorderThickness" Value="3"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border Background="#E06C9F" ToolTip="Pink">
+                            <Border.InputBindings><MouseBinding MouseAction="LeftClick" Command="{Binding SetAccentCommand}" CommandParameter="pink"/></Border.InputBindings>
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource AccentCircle}">
+                                    <Style.Triggers><DataTrigger Binding="{Binding AccentColor}" Value="pink"><Setter Property="BorderThickness" Value="3"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <Border Background="#E06C75" ToolTip="Red">
+                            <Border.InputBindings><MouseBinding MouseAction="LeftClick" Command="{Binding SetAccentCommand}" CommandParameter="red"/></Border.InputBindings>
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource AccentCircle}">
+                                    <Style.Triggers><DataTrigger Binding="{Binding AccentColor}" Value="red"><Setter Property="BorderThickness" Value="3"/></DataTrigger></Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{Binding LanguageHeader}" FontSize="10" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,14"/>
+                    <TextBlock Text="{Binding LanguageDesc}" FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="English" Width="100" Margin="0,0,10,0" Command="{Binding SetLanguageCommand}" CommandParameter="en">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource GhostButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Language}" Value="en">
+                                            <Setter Property="Background" Value="{DynamicResource TealBg}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource Teal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="Türkçe" Width="100" Command="{Binding SetLanguageCommand}" CommandParameter="tr">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource GhostButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Language}" Value="tr">
+                                            <Setter Property="Background" Value="{DynamicResource TealBg}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource Teal}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Avatar Section -->
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="AVATAR" FontSize="10" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,14"/>
+                    <ItemsControl ItemsSource="{Binding Avatars}">
+                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="44" Height="44" CornerRadius="10" Margin="0,0,8,8" Cursor="Hand" BorderThickness="2">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{DynamicResource Surface2}"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource Border}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                            <Binding Path="DataContext.Avatar" RelativeSource="{RelativeSource AncestorType=ItemsControl}"/>
+                                                            <Binding Path="."/>
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
+                                                    <Setter Property="Background" Value="{DynamicResource TealBg}"/>
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource Teal}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Border.InputBindings>
+                                        <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.SetAvatarCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}"/>
+                                    </Border.InputBindings>
+                                    <TextBlock Text="{Binding}" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="{Binding DailyGoalHeader}" FontSize="10" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,12"/>
+                    <TextBlock Text="{Binding DailyGoalDesc}" FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,0,0,10"/>
+                    <TextBlock FontSize="13" Foreground="{DynamicResource Teal}" FontWeight="Bold" Margin="0,0,0,8">
+                        <Run Text="{Binding DailyGoalWords, Mode=OneWay}"/>
+                        <Run Text="{Binding WordsPerDaySuffix}"/>
+                    </TextBlock>
+                    <Slider Minimum="5" Maximum="50" Value="{Binding DailyGoalWords, UpdateSourceTrigger=PropertyChanged}" TickFrequency="5" IsSnapToTickEnabled="True">
+                        <Slider.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding SaveCommand}"/>
+                        </Slider.InputBindings>
+                    </Slider>
+                </StackPanel>
+            </Border>
+
+            <!-- Data Management Section -->
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16" Margin="0,0,0,14">
+                <StackPanel>
+                    <TextBlock Text="DATA MANAGEMENT" FontSize="10" Foreground="{DynamicResource Muted}" FontWeight="Bold" Margin="0,0,0,14"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Export JSON" Style="{StaticResource GhostButton}" Margin="0,0,10,0" Padding="14,8" Command="{Binding ExportDataCommand}"/>
+                        <Button Content="Import JSON" Style="{StaticResource GhostButton}" Margin="0,0,10,0" Padding="14,8" Command="{Binding ImportDataCommand}"/>
+                        <Button Content="Clear All Data" Background="#3E2024" BorderBrush="#6E2C33" Foreground="#E06C75" Style="{StaticResource GhostButton}" Padding="14,8" Command="{Binding ClearDataCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- About Section -->
+            <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Border}" BorderThickness="1" CornerRadius="10" Padding="20,16">
+                <StackPanel>
+                    <TextBlock Text="GleemLet v1.0" FontSize="14" Foreground="{DynamicResource Text}" FontWeight="Bold"/>
+                    <TextBlock Text="Created with love for language learners." FontSize="13" Foreground="{DynamicResource Muted}" Margin="0,4,0,8"/>
+                    <TextBlock FontSize="13" Foreground="{DynamicResource Dim}">
+                        <Run Text="Created by gleemron  ·  "/>
+                        <Hyperlink NavigateUri="https://emirodabas.dev" Foreground="{DynamicResource Teal}">emirodabas.dev</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

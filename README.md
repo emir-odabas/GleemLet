@@ -12,6 +12,7 @@ GleemLet is a WPF desktop application for learning English vocabulary through fl
 - **Dark / Light Theme** — Switch between themes at any time
 - **Sound Feedback** — Audio cues for correct and wrong answers
 - **Smooth Animations** — Polished transitions throughout the app
+- **Improved Theme Engine** — Resolved runtime crashes and resource collisions
 
 ---
 
@@ -48,7 +49,7 @@ dotnet publish -c Release -r win-x64 --self-contained true
 ## Tech Stack
 
 - **C# / WPF** — UI and application logic
-- **.NET 8** — Runtime
+- **.NET 9** — Updated for performance and features
 - **XAML** — Layout and styling
 
 ---

@@ -16,10 +16,10 @@ public static class L
     public static string QuickStudy  => TR ? "Hızlı Çalış": "Quick Study";
 
     // ── HOME ──
-    public static string WelcomeBack(string name) => TR ? $"👋 Tekrar hoş geldin, {name}!" : $"👋 Welcome back, {name}!";
-    public static string ConsistencyTip => TR ? "Strîki devam ettir — tutarlılık anahtardır." : "Keep your streak going — consistency is key.";
+    public static string WelcomeBack(string name) => TR ? $"Tekrar hoş geldin, {name}!" : $"Welcome back, {name}!";
+    public static string ConsistencyTip => TR ? "Seriyi devam ettir — tutarlılık anahtardır." : "Keep your streak going — consistency is key.";
     public static string RecentSets  => TR ? "Son Setler"    : "Recent Sets";
-    public static string NewSet      => TR ? "+ Yeni Set"    : "+ New Set";
+    public static string NewSet      => TR ? "Yeni Set"      : "New Set";
     public static string RecentActivity => TR ? "Son Aktiviteler" : "Recent Activity";
     public static string NoSetsYet   => TR ? "Henüz set yok" : "No sets yet";
     public static string CreateFirstSet => TR ? "İlk kelime setini oluştur" : "Create your first vocabulary set";
@@ -33,7 +33,7 @@ public static class L
 
     // ── SETS ──
     public static string MySets      => TR ? "Setlerim"     : "My Sets";
-    public static string SearchPlaceholder => TR ? "🔍  Set ve kelime ara..." : "🔍  Search sets and words...";
+    public static string SearchPlaceholder => TR ? "Set ve kelime ara..." : "Search sets and words...";
     public static string AllCategories => TR ? "Tüm Kategoriler" : "All Categories";
     public static string NoSetsFound => TR ? "Set bulunamadı" : "No sets found";
     public static string CreateSetToStart => TR ? "Başlamak için yeni bir set oluştur" : "Create a new set to get started";
@@ -41,35 +41,35 @@ public static class L
     public static string LearnedOf(int l, int t) => TR ? $"{l}/{t} öğrenildi" : $"{l}/{t} learned";
 
     // ── DETAIL ──
-    public static string BackToSets  => TR ? "← Setlere Dön" : "← Back to Sets";
+    public static string BackToSets  => TR ? "Setlere Dön" : "Back to Sets";
     public static string WordsCount(int w, int l, string cat, double p)
         => TR ? $"{w} kelime  ·  {l} öğrenildi  ·  {cat}  ·  %{p:F0} tamamlandı"
               : $"{w} words  ·  {l} learned  ·  {cat}  ·  {p:F0}% complete";
-    public static string EditSet     => TR ? "✏ Düzenle"    : "✏ Edit";
-    public static string DeleteSet   => TR ? "🗑 Sil"       : "🗑 Delete";
+    public static string EditSet     => TR ? "Düzenle"    : "Edit";
+    public static string DeleteSet   => TR ? "Sil"       : "Delete";
     public static string MarkLearned => TR ? "Öğrendim olarak işaretle" : "Mark as learned";
-    public static string DetailSearchHint => TR ? "🔍  Kelime ara..." : "🔍  Search words in this set...";
+    public static string DetailSearchHint => TR ? "Kelime ara..." : "Search words in this set...";
     public static string Flashcards  => TR ? "Kartlar"      : "Flashcards";
     public static string Learn       => TR ? "Öğren"        : "Learn";
     public static string Test        => TR ? "Test"         : "Test";
     public static string Timed       => TR ? "Zamanlı"      : "Timed";
 
     // ── STUDY ──
-    public static string ClickToFlip => TR ? "ÇEVIRMEK İÇİN TIKLA  (veya Boşluk)" : "CLICK TO FLIP  (or press Space)";
+    public static string ClickToFlip => TR ? "ÇEVİRMEK İÇİN TIKLA  (veya Boşluk)" : "CLICK TO FLIP  (or press Space)";
     public static string Meaning     => TR ? "ANLAM"        : "MEANING";
-    public static string GotIt       => TR ? "✓  Bildim!"   : "✓  Got it!";
-    public static string StillLearning => TR ? "😕  Hâlâ öğreniyorum" : "😕  Still learning";
-    public static string Prev        => TR ? "← Önceki"    : "← Prev";
-    public static string Next        => TR ? "Sonraki →"   : "Next →";
-    public static string Shuffle     => TR ? "🔀 Karıştır" : "🔀 Shuffle";
+    public static string GotIt       => TR ? "Bildim!"   : "Got it!";
+    public static string StillLearning => TR ? "Hâlâ öğreniyorum" : "Still learning";
+    public static string Prev        => TR ? "Önceki"    : "Prev";
+    public static string Next        => TR ? "Sonraki"   : "Next";
+    public static string Shuffle     => TR ? "Karıştır" : "Shuffle";
     public static string WhatMeaning => TR ? "Bu kelimenin anlamı nedir:" : "What is the meaning of:";
     public static string TypeMeaning => TR ? "Anlamını yaz:" : "Type the meaning of:";
-    public static string Check       => TR ? "Kontrol Et →" : "Check →";
-    public static string Correct     => TR ? "✓  Doğru!"    : "✓  Correct!";
-    public static string Incorrect(string ans) => TR ? $"✗  Yanlış. Doğrusu: {ans}" : $"✗  Incorrect. Answer: {ans}";
-    public static string EndStudy    => TR ? "✕ Bitir"      : "✕ End";
-    public static string BackToSet   => TR ? "← Sete Dön"  : "← Back to Set";
-    public static string TryAgain    => TR ? "🔄 Tekrar Dene" : "🔄 Try Again";
+    public static string Check       => TR ? "Kontrol Et" : "Check";
+    public static string Correct     => TR ? "Doğru!"    : "Correct!";
+    public static string Incorrect(string ans) => TR ? $"Yanlış. Doğrusu: {ans}" : $"Incorrect. Answer: {ans}";
+    public static string EndStudy    => TR ? "Bitir"      : "End";
+    public static string BackToSet   => TR ? "Sete Dön"  : "Back to Set";
+    public static string TryAgain    => TR ? "Tekrar Dene" : "Try Again";
 
     // ── RESULTS ──
     public static string Perfect     => TR ? "Mükemmel!"    : "Perfect!";
@@ -81,7 +81,7 @@ public static class L
     public static string WrongLabel  => TR ? "Yanlış"       : "Wrong";
     public static string TotalLabel  => TR ? "Toplam"       : "Total";
     public static string TimeLabel   => TR ? "Süre"         : "Time";
-    public static string NewBadges   => TR ? "🏅 Yeni rozetler kazanıldı!" : "🏅 New badges earned!";
+    public static string NewBadges   => TR ? "Yeni rozetler kazanıldı!" : "New badges earned!";
 
     // ── STATS ──
     public static string Statistics  => TR ? "İstatistikler" : "Statistics";
@@ -99,40 +99,40 @@ public static class L
 
     // ── PROFILE ──
     public static string ProfileSettings => TR ? "Profil & Ayarlar" : "Profile & Settings";
-    public static string ProfileSection  => TR ? "👤 Profil"       : "👤 Profile";
+    public static string ProfileSection  => TR ? "Profil"       : "Profile";
     public static string DisplayName     => TR ? "Görünen Ad"      : "Display Name";
     public static string LearningGoal    => TR ? "Öğrenme Hedefi"  : "Learning Goal";
     public static string Save            => TR ? "Kaydet"          : "Save";
-    public static string Preferences     => TR ? "⚙ Tercihler"    : "⚙ Preferences";
+    public static string Preferences     => TR ? "Tercihler"    : "Preferences";
     public static string SoundEffects    => TR ? "Ses Efektleri"   : "Sound Effects";
     public static string SoundDesc       => TR ? "Doğru/yanlış cevaplarda ses çal" : "Play sound on correct/wrong answers";
     public static string LobbyMusic      => TR ? "Lobi Müziği"     : "Lobby Music";
     public static string LobbyMusicDesc  => TR ? "Ana ekranda arka plan müziği çal" : "Play background music on the home screen";
     public static string ShuffleDefault  => TR ? "Varsayılan Karıştır" : "Shuffle by Default";
     public static string ShuffleDesc     => TR ? "Çalışma oturumlarında kartları karıştır" : "Randomize card order in study sessions";
-    public static string LanguageSection => TR ? "🌐 Dil / Language" : "🌐 Language / Dil";
+    public static string LanguageSection => TR ? "Dil / Language" : "Language / Dil";
     public static string LanguageDesc    => TR ? "Uygulama dilini seçin" : "Select application language";
 
     // ── TEMA ──
-    public static string ThemeSection   => TR ? "🎨 Görünüm" : "🎨 Appearance";
-    public static string ThemeDark      => TR ? "🌙 Koyu" : "🌙 Dark";
-    public static string ThemeLight     => TR ? "☀️ Aydınlık" : "☀️ Light";
+    public static string ThemeSection   => TR ? "Görünüm" : "Appearance";
+    public static string ThemeDark      => TR ? "Koyu" : "Dark";
+    public static string ThemeLight     => TR ? "Aydınlık" : "Light";
     public static string AccentLabel    => TR ? "Aksent Rengi" : "Accent Color";
 
     // ── AVATAR & GÜNLÜK HEDEF ──
-    public static string AvatarSection    => TR ? "🧑 Avatar" : "🧑 Avatar";
+    public static string AvatarSection    => TR ? "Avatar" : "Avatar";
     public static string AvatarDesc       => TR ? "Profilinde görünecek avatarı seç" : "Choose your profile avatar";
-    public static string DailyGoalSection => TR ? "🎯 Günlük Hedef" : "🎯 Daily Goal";
+    public static string DailyGoalSection => TR ? "Günlük Hedef" : "Daily Goal";
     public static string DailyGoalDesc    => TR ? "Günde kaç kelime öğrenmek istiyorsun?" : "How many words do you want to learn per day?";
     public static string DailyGoalWords(int n) => TR ? $"Günlük hedef: {n} kelime" : $"Daily goal: {n} words";
     public static string TodayProgress(int done, int goal) => TR ? $"Bugün: {done}/{goal} kelime" : $"Today: {done}/{goal} words";
 
-    public static string DataSection     => TR ? "🗄 Veri"          : "🗄 Data";
+    public static string DataSection     => TR ? "Veri"          : "Data";
 
-    public static string ExportJSON      => TR ? "📤 JSON Dışa Aktar" : "📤 Export JSON";
-    public static string ImportJSON      => TR ? "📥 JSON İçe Aktar" : "📥 Import JSON";
-    public static string ClearAllData   => TR ? "🗑 Tüm Veriyi Sil" : "🗑 Clear All Data";
-    public static string AboutSection   => TR ? "ℹ Hakkında"       : "ℹ About";
+    public static string ExportJSON      => TR ? "JSON Dışa Aktar" : "Export JSON";
+    public static string ImportJSON      => TR ? "JSON İçe Aktar" : "Import JSON";
+    public static string ClearAllData   => TR ? "Tüm Veriyi Sil" : "Clear All Data";
+    public static string AboutSection   => TR ? "Hakkında"       : "About";
     public static string AppDesc        => TR ? "Akıllı kelime pratik uygulaması." : "A smart vocabulary practice app.";
 
     // ── DIALOGS ──

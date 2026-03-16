@@ -103,6 +103,10 @@ public static class ThemeService
         res[key] = c;
     }
 
-    private static Color Color(string hex) =>
-        (Color)System.Windows.Media.ColorConverter.ConvertFromString(hex);
+    private static Color Color(string hex)
+    {
+        if (hex.StartsWith("#FF") && hex.Length == 9)
+            hex = "#" + hex.Substring(3);
+        return (Color)System.Windows.Media.ColorConverter.ConvertFromString(hex);
+    }
 }

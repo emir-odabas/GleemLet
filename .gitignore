@@ -103,6 +103,15 @@ ipch/
 # Visual Studio Trace Files
 *.e2e
 
+# GleemLet Temporary Files
+app_run_result.txt
+build_error_final.txt
+crash.log
+
+# AI/Agent temporary files
+.antigravity*
+.gemini/
+
 # TFS 2012 Local Workspace
 $tf/
 

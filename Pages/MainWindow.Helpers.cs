@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using GleemLet.Models;
 using GleemLet.Services;
 using GleemLet.Windows;
+using MaterialDesignThemes.Wpf;
 
 namespace GleemLet;
 
@@ -62,7 +63,12 @@ public partial class MainWindow
         var modeRow = new StackPanel { Orientation = Orientation.Horizontal };
         foreach (var mode in new[] { StudyMode.Flashcard, StudyMode.Learn, StudyMode.Test })
         {
-            var btn = new Button { Content = mode.ToIcon(), FontSize = 14, Padding = new Thickness(8, 5, 8, 5), Margin = new Thickness(0, 0, 6, 0) };
+            var btn = new Button
+            {
+                Content = new PackIcon { Kind = (PackIconKind)Enum.Parse(typeof(PackIconKind), mode.ToIcon()), Width = 16, Height = 16 },
+                Padding = new Thickness(10, 6, 10, 6), Margin = new Thickness(0, 0, 8, 0),
+                ToolTip = mode.ToLabel()
+            };
             btn.Style = (Style)FindResource("GhostButton");
             var capturedMode = mode; var capturedId = set.Id;
             btn.Click += (s, e) => { e.Handled = true; _currentSetId = capturedId; StartStudy(capturedMode); };
@@ -92,10 +98,10 @@ public partial class MainWindow
         return g;
     }
 
-    private FrameworkElement MakeEmptyState(string icon, string title, string sub, string btnText, Action btnAction)
+    private FrameworkElement MakeEmptyState(PackIconKind icon, string title, string sub, string btnText, Action btnAction)
     {
         var sp = new StackPanel { HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 40, 0, 0) };
-        sp.Children.Add(MakeText(icon, 48, "#2E2E3A", margin: new Thickness(0, 0, 0, 12)));
+        sp.Children.Add(new PackIcon { Kind = icon, Width = 48, Height = 48, Foreground = ThemeService.B("Surface2"), HorizontalAlignment = HorizontalAlignment.Center, Margin = new Thickness(0, 0, 0, 12) });
         sp.Children.Add(MakeText(title, 16, "#8888A0", isBold: true, margin: new Thickness(0, 0, 0, 6)));
         sp.Children.Add(MakeText(sub,   13, "#4A4A60",               margin: new Thickness(0, 0, 0, 16)));
         var btn = new Button { Content = btnText, Style = (Style)FindResource("PrimaryButton"), HorizontalAlignment = HorizontalAlignment.Center };

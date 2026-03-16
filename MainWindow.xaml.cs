@@ -15,6 +15,12 @@ public partial class MainWindow : Window
 {
     private readonly DataService _ds = DataService.Instance;
 
+    public ViewModels.HomeViewModel    HomeVM    { get; } = new();
+    public ViewModels.SetsViewModel    SetsVM    { get; } = new();
+    public ViewModels.StatsViewModel   StatsVM   { get; } = new();
+    public ViewModels.BadgesViewModel  BadgesVM  { get; } = new();
+    public ViewModels.ProfileViewModel ProfileVM { get; } = new();
+
     private string _currentSetId = "";
     private StudyMode _studyMode = StudyMode.Flashcard;
     private List<Flashcard> _studyQueue = [];
@@ -34,11 +40,67 @@ public partial class MainWindow : Window
         ThemeService.Apply(_ds.Data.Profile.Theme, _ds.Data.Profile.AccentColor);
         UpdateSidebarLabels();
         UpdateSidebar();
+
+        // NavigationService'e abone ol
+        NavigationService.Instance.PageChanged += page =>
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // Sidebar butonlarını senkronize et
+                foreach (var nb in new[] { NavHome, NavSets, NavStats, NavBadges, NavProfile })
+                    nb.IsChecked = nb.Tag?.ToString() == page;
+
+                switch (page)
+                {
+                    case "home":    ShowHome();    break;
+                    case "sets":    ShowSets();    break;
+                    case "stats":   ShowStats();   break;
+                    case "badges":  ShowBadges();  break;
+                    case "profile": ShowProfile(); break;
+                }
+            });
+        };
+
+        NavigationService.Instance.NewSetRequested += () =>
+        {
+            Dispatcher.Invoke(() => OpenSetEditor(null));
+        };
+
+        NavigationService.Instance.RebuildRequested += () =>
+        {
+            Dispatcher.Invoke(RebuildUI);
+        };
+
+        NavigationService.Instance.StudyRequested += (setId, mode) =>
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _currentSetId = setId;
+                StartStudy(mode);
+            });
+        };
+
+        NavigationService.Instance.AvatarChanged += () =>
+        {
+            Dispatcher.Invoke(UpdateSidebar);
+        };
+
         ShowHome();
+        LoadViewModels();
+    }
+
+    private void LoadViewModels()
+    {
+        HomeVM.Load();
+        SetsVM.Load();
+        StatsVM.Load();
+        BadgesVM.Load();
+        ProfileVM.Load();
     }
 
     private void RebuildUI()
     {
+        LoadViewModels(); 
         UpdateSidebarLabels();
         UpdateSidebar();
         switch (_currentPage)
@@ -70,35 +132,20 @@ public partial class MainWindow : Window
         DetailTimedText.Text      = L.Timed;
         DetailSearchHint.Text     = L.DetailSearchHint;
 
-        SetsSearchHint.Text = L.SearchPlaceholder;
-        NewSetBtn.Content   = L.NewSet;
-        UpdateCategoryFilter();
+        // Legacy UI elements are now inside UserControls
+        // SetsSearchHint.Text = L.SearchPlaceholder;
+        // NewSetBtn.Content   = L.NewSet;
+        // UpdateCategoryFilter();
     }
 
     private void UpdateCategoryFilter()
     {
+        /* logic moved to ViewModels
         var currentTag = (CategoryFilter.SelectedItem as ComboBoxItem)?.Tag as string ?? "";
-
         CategoryFilter.SelectionChanged -= Filter_Changed;
         CategoryFilter.Items.Clear();
-
-        var cats = new[]
-        {
-            ("",          L.CatAllLabel),
-            ("General",   L.CatGeneral),
-            ("Academic",  L.CatAcademic),
-            ("Business",  L.CatBusiness),
-            ("Daily",     L.CatDaily),
-            ("Technical", L.CatTechnical),
-        };
-        int selectIdx = 0;
-        for (int i = 0; i < cats.Length; i++)
-        {
-            CategoryFilter.Items.Add(new ComboBoxItem { Content = cats[i].Item2, Tag = cats[i].Item1 });
-            if (cats[i].Item1 == currentTag) selectIdx = i;
-        }
-        CategoryFilter.SelectedIndex = selectIdx;
-        CategoryFilter.SelectionChanged += Filter_Changed;
+        ...
+        */
     }
 
     // ═══════════════════════════════════════
@@ -110,14 +157,9 @@ public partial class MainWindow : Window
         foreach (var nb in new[] { NavHome, NavSets, NavStats, NavBadges, NavProfile })
             nb.IsChecked = false;
         btn.IsChecked = true;
-        switch (btn.Tag?.ToString())
-        {
-            case "home":    ShowHome();    break;
-            case "sets":    ShowSets();    break;
-            case "stats":   ShowStats();   break;
-            case "badges":  ShowBadges();  break;
-            case "profile": ShowProfile(); break;
-        }
+
+        // Artık NavigationService üzerinden
+        NavigationService.Instance.NavigateTo(btn.Tag?.ToString() ?? "home");
     }
 
     private void HideAllPages()
